@@ -57,11 +57,22 @@ public class SearchTabController implements Initializable {
         amiiboList = FXCollections.observableArrayList();
         amiiboTableView.setItems(amiiboList);
         amiiboRetrieveTask = new AmiiboRetrieveTask(filterGroup, amiiboList);
+        amiiboRetrieveTask.setOnSucceeded(event -> {
+            logger.info("Amiibo retrieval task completed successfully.");
+            if (amiiboList.isEmpty()) {
+                amiiboTableView.setPlaceholder(new Label("No amiibo found for the selected filters."));
+            } else {
+                amiiboTableView.setPlaceholder(null);
+            }
+        });
+        amiiboRetrieveTask.setOnFailed(event -> {
+            logger.error("Amiibo retrieval task failed: {}", amiiboRetrieveTask.getException().getMessage());
+        });
         new Thread(amiiboRetrieveTask).start();
     }
 
     private void configureTableView() {
-        amiiboTableView.setPlaceholder(new Label("No data available"));
+        amiiboTableView.setPlaceholder(new Label("Loading..."));
         // TODO: Configure the image column to display images
         // amiiboImageColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<Image>(cellData.getValue().getImage()));
         amiiboNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
