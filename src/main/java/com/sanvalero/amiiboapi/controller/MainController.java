@@ -132,18 +132,28 @@ public class MainController implements Initializable {
         logger.info("Launching Amiibo Search...");
         logger.debug("Filter checkboxes: type={}, series={}, character={}", 
             typeCheckBox.isSelected(), seriesCheckBox.isSelected(), characterCheckBox.isSelected());
+        FilterEntry type = typeTableView.getSelectionModel().getSelectedItem();
+        FilterEntry series = seriesTableView.getSelectionModel().getSelectedItem();
+        FilterEntry character = characterTableView.getSelectionModel().getSelectedItem();
+        String tabName = (type != null ? "T:" + type.getName() + " " : "") + 
+            (series != null ? "S:" + series.getName() + " " : "") + 
+            (character != null ? "C:" + character.getName() + " " : "");
+        if (tabName.isEmpty()) {
+            tabName = "Amiibo Search";
+        }
         logger.debug("Selection in tables: type={}, series={}, character={}", 
-            typeTableView.getSelectionModel().getSelectedItem(), 
-            seriesTableView.getSelectionModel().getSelectedItem(), 
-            characterTableView.getSelectionModel().getSelectedItem());
+            type != null ? type.getKey() + " - " + type.getName() : "null",
+            series != null ? series.getKey() + " - " + series.getName() : "null",
+            character != null ? character.getKey() + " - " + character.getName() : "null"
+        );
         try {
             // Load the FXML file for the Amiibo Search tab
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("searchTab.fxml"));
-            // SearchTabController searchTabController = new SearchTabController();
-            // fxmlLoader.setController(searchTabController);
-            Tab newTab = new Tab("Placeholder", fxmlLoader.load()); // TODO: Replace tab title with filters used to search
+            SearchTabController searchTabController = new SearchTabController(type, series, character);
+            fxmlLoader.setController(searchTabController);
+            Tab newTab = new Tab(tabName, fxmlLoader.load()); // TODO: Replace tab title with filters used to search
             newTab.setClosable(true); // Allow the tab to be closed
-            // newTab.setUserData(searchTabController); // Store the controller in the tab for later access
+            newTab.setUserData(searchTabController); // Store the controller in the tab for later access
             searchTabPane.getTabs().add(newTab);
             logger.info("Search tab added to TabPane.");
         } catch (Exception e) {
