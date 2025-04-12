@@ -1,3 +1,9 @@
+# VS Code settings
+.vscode/
+
+# Java .gitignore file
+target/
+
 # Compiled class file
 *.class
 
