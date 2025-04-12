@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sanvalero.amiiboapi.model.AmiiboFilterEntry;
 import com.sanvalero.amiiboapi.model.AmiiboJsonEntry;
+import com.sanvalero.amiiboapi.util.FilterGroup;
 
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
@@ -18,12 +20,12 @@ public class AmiiboRetrieveService {
     private static final Logger logger = LoggerFactory.getLogger(AmiiboRetrieveService.class);
 
     private static final String BASE_URL = "https://amiiboapi.com/api/";
-    private String searchText;
+    private FilterGroup filterGroup;
     private AmiiboAPI amiiboAPI;
 
-    public AmiiboRetrieveService(String searchText) {
-        logger.info("Creating AmiiboRetrieveService with search arguments: {}", searchText);
-        this.searchText = searchText;
+    public AmiiboRetrieveService(FilterGroup filterGroup) {
+        logger.info("Creating AmiiboRetrieveService with search arguments: {}", filterGroup);
+        this.filterGroup = filterGroup;
         // Create HttpClient with logging interceptor
         HttpLoggingInterceptor httpInterceptor = new HttpLoggingInterceptor();
         httpInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -46,7 +48,7 @@ public class AmiiboRetrieveService {
     }
 
     public Observable<AmiiboJsonEntry> getAmiibo() {
-        return amiiboAPI.getAmiibo(searchText) // This returns an Observable<AmiiboResponse>
+        return amiiboAPI.getAmiibo(filterGroup.getType(), filterGroup.getSeries(), filterGroup.getCharacter()) // This returns an Observable<AmiiboResponse>
                         .map(amiiboResponse -> amiiboResponse.getAmiibo()) // Extract the List<AmiiboJsonEntry>
                         .flatMapIterable(amiiboJsonEntry -> amiiboJsonEntry); // Slice the List<AmiiboJsonEntry> into individual Observable<AmiiboJsonEntry> items
     }

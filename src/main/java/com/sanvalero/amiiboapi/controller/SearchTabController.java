@@ -7,6 +7,7 @@ import com.sanvalero.amiiboapi.entry.AmiiboEntry;
 import com.sanvalero.amiiboapi.entry.FilterEntry;
 import com.sanvalero.amiiboapi.task.AmiiboRetrieveTask;
 import com.sanvalero.amiiboapi.task.FilterRetrieveTask;
+import com.sanvalero.amiiboapi.util.FilterGroup;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -40,40 +41,22 @@ public class SearchTabController implements Initializable {
     @FXML
     private TableColumn<AmiiboEntry, String> amiiboTypeColumn;
 
-    private String searchText;
+    private FilterGroup filterGroup;
     private ObservableList<AmiiboEntry> amiiboList;
     private AmiiboRetrieveTask amiiboRetrieveTask;
 
     
     public SearchTabController(FilterEntry typeEntry, FilterEntry seriesEntry, FilterEntry characterEntry) {
-        searchText = "";
-        if (typeEntry != null) {
-            searchText += "type=" + typeEntry.getKey();
-        }
-        if (seriesEntry != null) {
-            searchText += "&amiiboSeries=" + seriesEntry.getKey();
-        }
-        if (characterEntry != null) {
-            searchText += "&character=" + characterEntry.getKey();
-        }
+        filterGroup = new FilterGroup(typeEntry, seriesEntry, characterEntry);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         logger.info("Initializing SearchTabController...");
         configureTableView();
-        // amiiboList = FXCollections.observableArrayList();
-        // amiiboTableView.setItems(amiiboList);
-        // amiiboRetrieveTask = new AmiiboRetrieveTask(searchText, amiiboList);
-        // new Thread(amiiboRetrieveTask).start();
-    }
-
-    @FXML
-    public void startSearch() {
-        logger.info("Searching for amiibo with text: {}", searchText);
         amiiboList = FXCollections.observableArrayList();
         amiiboTableView.setItems(amiiboList);
-        amiiboRetrieveTask = new AmiiboRetrieveTask(searchText, amiiboList);
+        amiiboRetrieveTask = new AmiiboRetrieveTask(filterGroup, amiiboList);
         new Thread(amiiboRetrieveTask).start();
     }
 
