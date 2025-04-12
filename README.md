@@ -6,13 +6,13 @@ Se pide una serie de requisitos a cumplir para desarrollar la actividad. Esta co
 JavaFX. Para el consumo de la API se utilizará la librería Retrofit.
 
 ### Requisitos obligatorios
-⬜ 1. La aplicación deberá utilizar técnicas de programación reactiva
+✅ 1. La aplicación deberá utilizar técnicas de programación reactiva
 utilizando la librería RxJava en algún momento.
 
-⬜ 2. Desde la interfaz de la aplicación se podrán realizar (al menos) 2 llamadas diferentes a la API (2 endpoints diferentes 
+✅ 2. Desde la interfaz de la aplicación se podrán realizar (al menos) 2 llamadas diferentes a la API (2 endpoints diferentes 
 (0.5 puntos cada uno)). Estas 2 llamadas deben devolver listados de ítems/elementos/objetos.
 
-⬜ 3. En la interfaz de la aplicación, se mostrará información detallada de los ítems de los dos listados anteriores. Utilizar la clase ObservableList de JavaFX para la visualización de los contenidos en los diferentes componentes de JavaFX que decidas utilizar. Si los componentes son de tipo ListView (0.5 puntos); si son de tipo TableView (1 punto)
+✅ 3. En la interfaz de la aplicación, se mostrará información detallada de los ítems de los dos listados anteriores. Utilizar la clase ObservableList de JavaFX para la visualización de los contenidos en los diferentes componentes de JavaFX que decidas utilizar. Si los componentes son de tipo ListView (0.5 puntos); si son de tipo TableView (1 punto)
 
 ⬜ 4. Todas las operaciones de carga de datos se harán en segundo plano (de manera concurrente).
 
