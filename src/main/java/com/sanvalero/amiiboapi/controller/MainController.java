@@ -59,6 +59,8 @@ public class MainController implements Initializable {
     private TabPane searchTabPane;
 
     private ObservableList<FilterEntry> typeList;
+    private ObservableList<FilterEntry> seriesList;
+    private ObservableList<FilterEntry> characterList;
     private FilterRetrieveTask filterRetrieveTask;
 
     @Override
@@ -100,7 +102,10 @@ public class MainController implements Initializable {
         logger.debug("Series checkbox action triggered with value: " + seriesCheckBox.isSelected());
         if (seriesCheckBox.isSelected()) {
             seriesTableView.disableProperty().set(false);
-            // TODO: Launch Amiibo's Series retrieval process
+            seriesList = FXCollections.observableArrayList();
+            seriesTableView.setItems(seriesList);
+            filterRetrieveTask = new FilterRetrieveTask("amiiboseries", seriesList);
+            new Thread(filterRetrieveTask).start();
         } else {
             seriesTableView.disableProperty().set(true);
             seriesTableView.getItems().clear();
@@ -112,7 +117,10 @@ public class MainController implements Initializable {
         logger.debug("Character checkbox action triggered with value: " + characterCheckBox.isSelected());
         if (characterCheckBox.isSelected()) {
             characterTableView.disableProperty().set(false);
-            // TODO: Launch Amiibo's Character retrieval process
+            characterList = FXCollections.observableArrayList();
+            characterTableView.setItems(characterList);
+            filterRetrieveTask = new FilterRetrieveTask("character", characterList);
+            new Thread(filterRetrieveTask).start();
         } else {
             characterTableView.disableProperty().set(true);
             characterTableView.getItems().clear();
@@ -122,6 +130,12 @@ public class MainController implements Initializable {
     @FXML
     private void launchAmiiboSearch() {
         logger.info("Launching Amiibo Search...");
+        logger.debug("Filter checkboxes: type={}, series={}, character={}", 
+            typeCheckBox.isSelected(), seriesCheckBox.isSelected(), characterCheckBox.isSelected());
+        logger.debug("Selection in tables: type={}, series={}, character={}", 
+            typeTableView.getSelectionModel().getSelectedItem(), 
+            seriesTableView.getSelectionModel().getSelectedItem(), 
+            characterTableView.getSelectionModel().getSelectedItem());
         try {
             // Load the FXML file for the Amiibo Search tab
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("searchTab.fxml"));

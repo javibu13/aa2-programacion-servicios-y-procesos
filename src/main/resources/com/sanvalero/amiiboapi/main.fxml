@@ -63,7 +63,7 @@
                                     <Font size="22.0" />
                                  </font>
                               </CheckBox>
-                              <TableView fx:id="seriesTableView" disable="true" fixedCellSize="20.0" maxHeight="200.0" prefHeight="100.0" prefWidth="274.0" VBox.vgrow="ALWAYS">
+                              <TableView fx:id="seriesTableView" disable="true" fixedCellSize="25.0" maxHeight="200.0" prefHeight="100.0" prefWidth="274.0" VBox.vgrow="ALWAYS">
                                 <columns>
                                   <TableColumn fx:id="seriesKeyColumn" prefWidth="75.0" text="Key" />
                                   <TableColumn fx:id="seriesNameColumn" prefWidth="75.0" text="Name" />
@@ -81,7 +81,7 @@
                                     <Font size="22.0" />
                                  </font>
                               </CheckBox>
-                              <TableView fx:id="characterTableView" disable="true" fixedCellSize="40.0" maxHeight="200.0" prefHeight="100.0" prefWidth="274.0" VBox.vgrow="ALWAYS">
+                              <TableView fx:id="characterTableView" disable="true" fixedCellSize="25.0" maxHeight="200.0" prefHeight="100.0" prefWidth="274.0" VBox.vgrow="ALWAYS">
                                 <columns>
                                   <TableColumn fx:id="characterKeyColumn" prefWidth="75.0" text="Key" />
                                   <TableColumn fx:id="characterNameColumn" prefWidth="75.0" text="Name" />

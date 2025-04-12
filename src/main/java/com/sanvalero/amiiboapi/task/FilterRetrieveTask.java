@@ -31,7 +31,7 @@ public class FilterRetrieveTask extends Task<Object> {
         FilterRetrieveService filterRetrieveService = new FilterRetrieveService(filterName);
         Consumer<AmiiboFilterEntry> consumer = amiiboFilterEntry -> {
             logger.info("Adding filter entry: {}", amiiboFilterEntry.getName());
-            Thread.sleep(250); // Simulate delay to show concurrency
+            Thread.sleep(100); // Simulate delay to show concurrency
             Platform.runLater(() -> {
                 filterObservableList.add(new FilterEntry(amiiboFilterEntry.getKey(), amiiboFilterEntry.getName()));
             });
