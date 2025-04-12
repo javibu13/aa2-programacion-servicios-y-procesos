@@ -45,11 +45,11 @@
                                     <Font size="22.0" />
                                  </font>
                               </CheckBox>
-                              <TableView fx:id="typeTableView" disable="true" fixedCellSize="20.0" maxHeight="200.0" prefHeight="100.0" prefWidth="274.0" VBox.vgrow="ALWAYS">
-                                <columns>
-                                  <TableColumn prefWidth="75.0" text="Key" />
-                                  <TableColumn prefWidth="75.0" text="Name" />
-                                </columns>
+                              <TableView fx:id="typeTableView" disable="true" fixedCellSize="25.0" maxHeight="200.0" prefHeight="100.0" prefWidth="274.0" VBox.vgrow="ALWAYS">
+                                 <columns>
+                                    <TableColumn fx:id="typeKeyColumn" prefWidth="75.0" text="Key" />
+                                    <TableColumn fx:id="typeNameColumn" prefWidth="75.0" text="Name" />
+                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
@@ -65,8 +65,8 @@
                               </CheckBox>
                               <TableView fx:id="seriesTableView" disable="true" fixedCellSize="20.0" maxHeight="200.0" prefHeight="100.0" prefWidth="274.0" VBox.vgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="Key" />
-                                  <TableColumn prefWidth="75.0" text="Name" />
+                                  <TableColumn fx:id="seriesKeyColumn" prefWidth="75.0" text="Key" />
+                                  <TableColumn fx:id="seriesNameColumn" prefWidth="75.0" text="Name" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -81,10 +81,10 @@
                                     <Font size="22.0" />
                                  </font>
                               </CheckBox>
-                              <TableView fx:id="characterTableView" disable="true" fixedCellSize="20.0" maxHeight="200.0" prefHeight="100.0" prefWidth="274.0" VBox.vgrow="ALWAYS">
+                              <TableView fx:id="characterTableView" disable="true" fixedCellSize="40.0" maxHeight="200.0" prefHeight="100.0" prefWidth="274.0" VBox.vgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="Key" />
-                                  <TableColumn prefWidth="75.0" text="Name" />
+                                  <TableColumn fx:id="characterKeyColumn" prefWidth="75.0" text="Key" />
+                                  <TableColumn fx:id="characterNameColumn" prefWidth="75.0" text="Name" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

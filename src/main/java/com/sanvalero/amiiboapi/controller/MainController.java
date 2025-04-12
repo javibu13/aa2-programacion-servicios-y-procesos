@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Font;
 
@@ -31,16 +33,28 @@ public class MainController implements Initializable {
     private CheckBox typeCheckBox;
     @FXML
     private TableView<FilterEntry> typeTableView;
+    @FXML
+    private TableColumn<FilterEntry, String> typeKeyColumn;
+    @FXML
+    private TableColumn<FilterEntry, String> typeNameColumn;
     // SERIES
     @FXML
     private CheckBox seriesCheckBox;
     @FXML
     private TableView<FilterEntry> seriesTableView;
+    @FXML
+    private TableColumn<FilterEntry, String> seriesKeyColumn;
+    @FXML
+    private TableColumn<FilterEntry, String> seriesNameColumn;
     // CHARACTER
     @FXML
     private CheckBox characterCheckBox;
     @FXML
     private TableView<FilterEntry> characterTableView;
+    @FXML
+    private TableColumn<FilterEntry, String> characterKeyColumn;
+    @FXML
+    private TableColumn<FilterEntry, String> characterNameColumn;
     @FXML
     private TabPane searchTabPane;
 
@@ -61,6 +75,9 @@ public class MainController implements Initializable {
         } catch (Exception e) {
             logger.error("Error loading custom font", e);
         }
+        configureTableView(typeTableView, typeKeyColumn, typeNameColumn);
+        configureTableView(seriesTableView, seriesKeyColumn, seriesNameColumn);
+        configureTableView(characterTableView, characterKeyColumn, characterNameColumn);
     }
 
     @FXML
@@ -118,5 +135,11 @@ public class MainController implements Initializable {
         } catch (Exception e) {
             logger.error("Error launching Amiibo Search", e);
         }
+    }
+
+    private void configureTableView(TableView<FilterEntry> tableView, TableColumn<FilterEntry, String> keyColumn, TableColumn<FilterEntry, String> nameColumn) {
+        tableView.setPlaceholder(new Label("No data available"));
+        keyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKey()));
+        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
     }
 }
