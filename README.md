@@ -16,7 +16,7 @@ utilizando la librería RxJava en algún momento.
 
 ✅ 4. Todas las operaciones de carga de datos se harán en segundo plano (de manera concurrente).
 
-⬜ 5. La aplicación implementará al menos una operación de búsqueda (0.5 puntos) y filtrado (0.5 puntos) sobre los datos previamente cargados de la API.
+✅ 5. La aplicación implementará al menos una operación de búsqueda (0.5 puntos) y filtrado (0.5 puntos) sobre los datos previamente cargados de la API.
 
 ### Requisitos opcionales
 ✅ 1. La aplicación podrá cargar y mostrar en la interfaz algún tipo de contenido gráfico a partir de información dada por la API (una foto, por ejemplo) (1 punto).
