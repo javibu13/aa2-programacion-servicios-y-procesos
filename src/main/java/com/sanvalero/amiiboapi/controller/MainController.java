@@ -63,7 +63,9 @@ public class MainController implements Initializable {
     private ObservableList<FilterEntry> characterList;
     // TODO: Divide this into one task per filter
     // TODO: Control (stop) the task execution when the checkbox is unchecked
-    private FilterRetrieveTask filterRetrieveTask;
+    private FilterRetrieveTask filterRetrieveTypeTask;
+    private FilterRetrieveTask filterRetrieveSeriesTask;
+    private FilterRetrieveTask filterRetrieveCharacterTask;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -91,11 +93,31 @@ public class MainController implements Initializable {
             typeTableView.disableProperty().set(false);
             typeList = FXCollections.observableArrayList();
             typeTableView.setItems(typeList);
-            filterRetrieveTask = new FilterRetrieveTask("type", typeList);
-            new Thread(filterRetrieveTask).start();
+            filterRetrieveTypeTask = new FilterRetrieveTask("type", typeList);
+            filterRetrieveTypeTask.setOnSucceeded(event -> {
+                logger.info("FilterRetrieveTask for type completed successfully.");
+                if (typeList.isEmpty()) {
+                    typeTableView.setPlaceholder(new Label("No types found."));
+                } else {
+                    typeTableView.setPlaceholder(null);
+                }
+            });
+            filterRetrieveTypeTask.setOnFailed(event -> {
+                logger.error("FilterRetrieveTask for type failed: {}", filterRetrieveTypeTask.getException().getMessage());
+                typeTableView.setPlaceholder(new Label("Error loading types."));
+            });
+            filterRetrieveTypeTask.setOnCancelled(event -> {
+                logger.info("FilterRetrieveTask for type was cancelled.");
+                typeTableView.setPlaceholder(new Label("Cancelled."));
+            });
+            typeTableView.setPlaceholder(new Label("Loading..."));
+            new Thread(filterRetrieveTypeTask).start();
         } else {
             typeTableView.disableProperty().set(true);
+            filterRetrieveTypeTask.cancel(true);
+            logger.debug("filterRetrieveTypeTask cancelled: " + filterRetrieveTypeTask.isCancelled());
             typeTableView.getItems().clear();
+            typeTableView.setPlaceholder(new Label("No data available"));
         }
     }
 
@@ -106,11 +128,31 @@ public class MainController implements Initializable {
             seriesTableView.disableProperty().set(false);
             seriesList = FXCollections.observableArrayList();
             seriesTableView.setItems(seriesList);
-            filterRetrieveTask = new FilterRetrieveTask("amiiboseries", seriesList);
-            new Thread(filterRetrieveTask).start();
+            filterRetrieveSeriesTask = new FilterRetrieveTask("amiiboseries", seriesList);
+            filterRetrieveSeriesTask.setOnSucceeded(event -> {
+                logger.info("FilterRetrieveTask for series completed successfully.");
+                if (seriesList.isEmpty()) {
+                    seriesTableView.setPlaceholder(new Label("No series found."));
+                } else {
+                    seriesTableView.setPlaceholder(null);
+                }
+            });
+            filterRetrieveSeriesTask.setOnFailed(event -> {
+                logger.error("FilterRetrieveTask for series failed: {}", filterRetrieveSeriesTask.getException().getMessage());
+                seriesTableView.setPlaceholder(new Label("Error loading series."));
+            });
+            filterRetrieveSeriesTask.setOnCancelled(event -> {
+                logger.info("FilterRetrieveTask for series was cancelled.");
+                seriesTableView.setPlaceholder(new Label("Cancelled."));
+            });
+            seriesTableView.setPlaceholder(new Label("Loading..."));
+            new Thread(filterRetrieveSeriesTask).start();
         } else {
             seriesTableView.disableProperty().set(true);
+            filterRetrieveSeriesTask.cancel(true);
+            logger.debug("filterRetrieveSeriesTask cancelled: " + filterRetrieveSeriesTask.isCancelled());
             seriesTableView.getItems().clear();
+            seriesTableView.setPlaceholder(new Label("No data available"));
         }
     }
 
@@ -121,11 +163,31 @@ public class MainController implements Initializable {
             characterTableView.disableProperty().set(false);
             characterList = FXCollections.observableArrayList();
             characterTableView.setItems(characterList);
-            filterRetrieveTask = new FilterRetrieveTask("character", characterList);
-            new Thread(filterRetrieveTask).start();
+            filterRetrieveCharacterTask = new FilterRetrieveTask("character", characterList);
+            filterRetrieveCharacterTask.setOnSucceeded(event -> {
+                logger.info("FilterRetrieveTask for character completed successfully.");
+                if (characterList.isEmpty()) {
+                    characterTableView.setPlaceholder(new Label("No characters found."));
+                } else {
+                    characterTableView.setPlaceholder(null);
+                }
+            });
+            filterRetrieveCharacterTask.setOnFailed(event -> {
+                logger.error("FilterRetrieveTask for character failed: {}", filterRetrieveCharacterTask.getException().getMessage());
+                characterTableView.setPlaceholder(new Label("Error loading characters."));
+            });
+            filterRetrieveCharacterTask.setOnCancelled(event -> {
+                logger.info("FilterRetrieveTask for character was cancelled.");
+                characterTableView.setPlaceholder(new Label("Cancelled."));
+            });
+            characterTableView.setPlaceholder(new Label("Loading..."));
+            new Thread(filterRetrieveCharacterTask).start();
         } else {
             characterTableView.disableProperty().set(true);
+            filterRetrieveCharacterTask.cancel(true);
+            logger.debug("filterRetrieveCharacterTask cancelled: " + filterRetrieveCharacterTask.isCancelled());
             characterTableView.getItems().clear();
+            characterTableView.setPlaceholder(new Label("No data available"));
         }
     }
 
@@ -153,9 +215,19 @@ public class MainController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("searchTab.fxml"));
             SearchTabController searchTabController = new SearchTabController(type, series, character);
             fxmlLoader.setController(searchTabController);
-            Tab newTab = new Tab(tabName, fxmlLoader.load()); // TODO: Replace tab title with filters used to search
+            Tab newTab = new Tab(tabName, fxmlLoader.load());
             newTab.setClosable(true); // Allow the tab to be closed
             newTab.setUserData(searchTabController); // Store the controller in the tab for later access
+            newTab.setOnClosed(event -> {
+                Tab closedTab = (Tab) event.getSource();
+                Object userData = closedTab.getUserData();
+
+                // Por ejemplo, si has guardado un controlador:
+                if (userData instanceof SearchTabController controller) {
+                    controller.cancelTask(); // Cancel the task on tab close
+                    logger.info("Search tab closed, task cancelled.");
+                }
+            });
             searchTabPane.getTabs().add(newTab);
             logger.info("Search tab added to TabPane.");
         } catch (Exception e) {

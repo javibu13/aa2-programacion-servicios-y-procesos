@@ -70,6 +70,13 @@ public class SearchTabController implements Initializable {
         new Thread(amiiboRetrieveTask).start();
     }
 
+    public void cancelTask() {
+        if (amiiboRetrieveTask != null && amiiboRetrieveTask.isRunning()) {
+            amiiboRetrieveTask.cancel();
+            logger.info("Amiibo retrieval task cancelled.");
+        }
+    }
+
     private void configureTableView() {
         amiiboTableView.setPlaceholder(new Label("Loading..."));
         amiiboImageColumn.setCellValueFactory(cellData -> cellData.getValue().getImageViewProperty());
