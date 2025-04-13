@@ -14,12 +14,12 @@ utilizando la librería RxJava en algún momento.
 
 ✅ 3. En la interfaz de la aplicación, se mostrará información detallada de los ítems de los dos listados anteriores. Utilizar la clase ObservableList de JavaFX para la visualización de los contenidos en los diferentes componentes de JavaFX que decidas utilizar. Si los componentes son de tipo ListView (0.5 puntos); si son de tipo TableView (1 punto)
 
-⬜ 4. Todas las operaciones de carga de datos se harán en segundo plano (de manera concurrente).
+✅ 4. Todas las operaciones de carga de datos se harán en segundo plano (de manera concurrente).
 
 ⬜ 5. La aplicación implementará al menos una operación de búsqueda (0.5 puntos) y filtrado (0.5 puntos) sobre los datos previamente cargados de la API.
 
 ### Requisitos opcionales
-⬜ 1. La aplicación podrá cargar y mostrar en la interfaz algún tipo de contenido gráfico a partir de información dada por la API (una foto, por ejemplo) (1 punto).
+✅ 1. La aplicación podrá cargar y mostrar en la interfaz algún tipo de contenido gráfico a partir de información dada por la API (una foto, por ejemplo) (1 punto).
 
 ⬜ 2. La aplicación se conectará con más de una API (1 punto).
 
