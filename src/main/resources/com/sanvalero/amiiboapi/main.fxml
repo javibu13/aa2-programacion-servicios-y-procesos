@@ -106,9 +106,9 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="200.0" prefWidth="900.0" VBox.vgrow="SOMETIMES">
+      <AnchorPane prefHeight="250.0" prefWidth="900.0" VBox.vgrow="SOMETIMES">
          <children>
-            <TabPane fx:id="searchTabPane" layoutY="127.0" prefHeight="242.0" prefWidth="900.0" tabClosingPolicy="ALL_TABS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <TabPane fx:id="searchTabPane" layoutY="127.0" prefHeight="250.0" prefWidth="900.0" tabClosingPolicy="ALL_TABS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
    </children>
