@@ -28,3 +28,7 @@ utilizando la librería RxJava en algún momento.
 ⬜ 4. Crear, utilizando WebFlux, un pequeño servicio web relacionado con la API seleccionada y consúmelo desde alguna zona de la aplicación JavaFX utilizando WebClient (1 punto).
 
 ⬜ 5. Realizar el seguimiento del proyecto utilizando la plataforma GitHub para almacenar el código y gestionando las issues (bug, mejoras, . . .) a medida que se vaya trabajando en él. Al menos tiene que haber 2 ramas: main y develop (0.5 puntos). También puede haber issues y ramas para cada uno de las funcionalidades (0.5 puntos).
+
+### Requisitos para la ejecución de la aplicación
+- Se necesita una API key de RAWG.io para poder utilizar la funcionalidad de obtener juegos relacionados con el game series al que 
+pertenece el juego seleccionado. Para ello, se debe crear una cuenta en la página de RAWG.io y obtener la API key. Una vez obtenida, se debe crear un archivo llamado `secretAPIKey.key` en la carpeta `resources` del proyecto con únicamente la API key dentro. El archivo `secretAPIKey.key` no se debe subir al repositorio de GitHub, ya que contiene información sensible.
