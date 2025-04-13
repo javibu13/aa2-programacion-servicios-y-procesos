@@ -21,7 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class SearchTabController implements Initializable {
     private static final Logger logger = LoggerFactory.getLogger(SearchTabController.class);
@@ -29,7 +29,7 @@ public class SearchTabController implements Initializable {
     @FXML
     private TableView<AmiiboEntry> amiiboTableView;
     @FXML
-    private TableColumn<AmiiboEntry, Image> amiiboImageColumn;
+    private TableColumn<AmiiboEntry, ImageView> amiiboImageColumn;
     @FXML
     private TableColumn<AmiiboEntry, String> amiiboNameColumn;
     @FXML
@@ -57,13 +57,24 @@ public class SearchTabController implements Initializable {
         amiiboList = FXCollections.observableArrayList();
         amiiboTableView.setItems(amiiboList);
         amiiboRetrieveTask = new AmiiboRetrieveTask(filterGroup, amiiboList);
+        amiiboRetrieveTask.setOnSucceeded(event -> {
+            logger.info("Amiibo retrieval task completed successfully.");
+            if (amiiboList.isEmpty()) {
+                amiiboTableView.setPlaceholder(new Label("No amiibo found for the selected filters."));
+            } else {
+                amiiboTableView.setPlaceholder(null);
+                amiiboList.forEach(AmiiboEntry::loadImageAsync);
+            }
+        });
+        amiiboRetrieveTask.setOnFailed(event -> {
+            logger.error("Amiibo retrieval task failed: {}", amiiboRetrieveTask.getException().getMessage());
+        });
         new Thread(amiiboRetrieveTask).start();
     }
 
     private void configureTableView() {
-        amiiboTableView.setPlaceholder(new Label("No data available"));
-        // TODO: Configure the image column to display images
-        // amiiboImageColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<Image>(cellData.getValue().getImage()));
+        amiiboTableView.setPlaceholder(new Label("Loading..."));
+        amiiboImageColumn.setCellValueFactory(cellData -> cellData.getValue().getImageViewProperty());
         amiiboNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         amiiboCharacterColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCharacter()));
         amiiboSeriesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAmiiboSeries()));
