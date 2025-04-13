@@ -218,6 +218,16 @@ public class MainController implements Initializable {
             Tab newTab = new Tab(tabName, fxmlLoader.load());
             newTab.setClosable(true); // Allow the tab to be closed
             newTab.setUserData(searchTabController); // Store the controller in the tab for later access
+            newTab.setOnClosed(event -> {
+                Tab closedTab = (Tab) event.getSource();
+                Object userData = closedTab.getUserData();
+
+                // Por ejemplo, si has guardado un controlador:
+                if (userData instanceof SearchTabController controller) {
+                    controller.cancelTask(); // Cancel the task on tab close
+                    logger.info("Search tab closed, task cancelled.");
+                }
+            });
             searchTabPane.getTabs().add(newTab);
             logger.info("Search tab added to TabPane.");
         } catch (Exception e) {
