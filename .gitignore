@@ -4,6 +4,9 @@
 # Java .gitignore file
 target/
 
+# secret API keys
+*.key
+
 # Compiled class file
 *.class
 

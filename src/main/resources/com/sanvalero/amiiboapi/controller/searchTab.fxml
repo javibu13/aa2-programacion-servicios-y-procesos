@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" spacing="15.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
@@ -38,6 +39,8 @@
       </TableView>
       <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="560.0" spacing="10.0" VBox.vgrow="NEVER">
          <children>
+            <Button fx:id="amiiboGameListButton" disable="true" mnemonicParsing="false" onAction="#openGameList" prefHeight="25.0" prefWidth="168.0" text="Open game list of selection" HBox.hgrow="ALWAYS" />
+            <Region prefHeight="25.0" prefWidth="0.0" HBox.hgrow="SOMETIMES" />
             <CheckBox fx:id="amiiboCompressToZipCheckBox" disable="true" mnemonicParsing="false" text="Zip export?" />
             <Button fx:id="amiiboExportDataButton" disable="true" mnemonicParsing="false" onAction="#exportDataToFile" text="Export data" />
          </children>
