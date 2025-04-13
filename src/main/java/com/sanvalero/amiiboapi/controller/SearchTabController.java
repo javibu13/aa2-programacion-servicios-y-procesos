@@ -21,7 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class SearchTabController implements Initializable {
     private static final Logger logger = LoggerFactory.getLogger(SearchTabController.class);
@@ -29,7 +29,7 @@ public class SearchTabController implements Initializable {
     @FXML
     private TableView<AmiiboEntry> amiiboTableView;
     @FXML
-    private TableColumn<AmiiboEntry, Image> amiiboImageColumn;
+    private TableColumn<AmiiboEntry, ImageView> amiiboImageColumn;
     @FXML
     private TableColumn<AmiiboEntry, String> amiiboNameColumn;
     @FXML
@@ -63,6 +63,7 @@ public class SearchTabController implements Initializable {
                 amiiboTableView.setPlaceholder(new Label("No amiibo found for the selected filters."));
             } else {
                 amiiboTableView.setPlaceholder(null);
+                amiiboList.forEach(AmiiboEntry::loadImageAsync);
             }
         });
         amiiboRetrieveTask.setOnFailed(event -> {
@@ -73,8 +74,7 @@ public class SearchTabController implements Initializable {
 
     private void configureTableView() {
         amiiboTableView.setPlaceholder(new Label("Loading..."));
-        // TODO: Configure the image column to display images
-        // amiiboImageColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<Image>(cellData.getValue().getImage()));
+        amiiboImageColumn.setCellValueFactory(cellData -> cellData.getValue().getImageViewProperty());
         amiiboNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         amiiboCharacterColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCharacter()));
         amiiboSeriesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAmiiboSeries()));
