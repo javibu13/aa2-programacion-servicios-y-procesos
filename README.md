@@ -21,13 +21,13 @@ utilizando la librería RxJava en algún momento.
 ### Requisitos opcionales
 ✅ 1. La aplicación podrá cargar y mostrar en la interfaz algún tipo de contenido gráfico a partir de información dada por la API (una foto, por ejemplo) (1 punto).
 
-⬜ 2. La aplicación se conectará con más de una API (1 punto).
+✅ 2. La aplicación se conectará con más de una API (1 punto).
 
 ✅ 3. La aplicación permitirá la exportación del contenido devuelto por la API a un fichero CSV. Es importante que cada atributo de los ítems estén en una columna diferente (0.5 puntos). Además de la exportación a CSV, se podrá comprimir en ZIP el fichero CSV (0.5 puntos). Utilizar CompletableFuture para la implementación.
 
 ⬜ 4. Crear, utilizando WebFlux, un pequeño servicio web relacionado con la API seleccionada y consúmelo desde alguna zona de la aplicación JavaFX utilizando WebClient (1 punto).
 
-⬜ 5. Realizar el seguimiento del proyecto utilizando la plataforma GitHub para almacenar el código y gestionando las issues (bug, mejoras, . . .) a medida que se vaya trabajando en él. Al menos tiene que haber 2 ramas: main y develop (0.5 puntos). También puede haber issues y ramas para cada uno de las funcionalidades (0.5 puntos).
+✅ 5. Realizar el seguimiento del proyecto utilizando la plataforma GitHub para almacenar el código y gestionando las issues (bug, mejoras, . . .) a medida que se vaya trabajando en él. Al menos tiene que haber 2 ramas: main y develop (0.5 puntos). También puede haber issues y ramas para cada uno de las funcionalidades (0.5 puntos).
 
 ### Requisitos para la ejecución de la aplicación
 - Se necesita una API key de RAWG.io para poder utilizar la funcionalidad de obtener juegos relacionados con el game series al que 
