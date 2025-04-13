@@ -23,7 +23,7 @@ utilizando la librería RxJava en algún momento.
 
 ⬜ 2. La aplicación se conectará con más de una API (1 punto).
 
-⬜ 3. La aplicación permitirá la exportación del contenido devuelto por la API a un fichero CSV. Es importante que cada atributo de los ítems estén en una columna diferente (0.5 puntos). Además de la exportación a CSV, se podrá comprimir en ZIP el fichero CSV (0.5 puntos). Utilizar CompletableFuture para la implementación.
+✅ 3. La aplicación permitirá la exportación del contenido devuelto por la API a un fichero CSV. Es importante que cada atributo de los ítems estén en una columna diferente (0.5 puntos). Además de la exportación a CSV, se podrá comprimir en ZIP el fichero CSV (0.5 puntos). Utilizar CompletableFuture para la implementación.
 
 ⬜ 4. Crear, utilizando WebFlux, un pequeño servicio web relacionado con la API seleccionada y consúmelo desde alguna zona de la aplicación JavaFX utilizando WebClient (1 punto).
 
