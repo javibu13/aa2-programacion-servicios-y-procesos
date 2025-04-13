@@ -6,14 +6,12 @@ import org.slf4j.LoggerFactory;
 import com.sanvalero.amiiboapi.entry.AmiiboEntry;
 import com.sanvalero.amiiboapi.entry.FilterEntry;
 import com.sanvalero.amiiboapi.task.AmiiboRetrieveTask;
-import com.sanvalero.amiiboapi.task.FilterRetrieveTask;
 import com.sanvalero.amiiboapi.util.FilterGroup;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

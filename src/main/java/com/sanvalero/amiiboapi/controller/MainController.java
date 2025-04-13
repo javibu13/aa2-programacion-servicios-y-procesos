@@ -61,6 +61,8 @@ public class MainController implements Initializable {
     private ObservableList<FilterEntry> typeList;
     private ObservableList<FilterEntry> seriesList;
     private ObservableList<FilterEntry> characterList;
+    // TODO: Divide this into one task per filter
+    // TODO: Control (stop) the task execution when the checkbox is unchecked
     private FilterRetrieveTask filterRetrieveTask;
 
     @Override
