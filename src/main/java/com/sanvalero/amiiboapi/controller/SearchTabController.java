@@ -8,15 +8,28 @@ import com.sanvalero.amiiboapi.entry.FilterEntry;
 import com.sanvalero.amiiboapi.task.AmiiboRetrieveTask;
 import com.sanvalero.amiiboapi.util.FilterGroup;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -24,6 +37,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.DirectoryChooser;
 
 public class SearchTabController implements Initializable {
     private static final Logger logger = LoggerFactory.getLogger(SearchTabController.class);
@@ -50,7 +64,12 @@ public class SearchTabController implements Initializable {
     private TableColumn<AmiiboEntry, String> amiiboGameSeriesColumn;
     @FXML
     private TableColumn<AmiiboEntry, String> amiiboTypeColumn;
+    @FXML
+    private CheckBox amiiboCompressToZipCheckBox;
+    @FXML
+    private Button amiiboExportDataButton;
 
+    private String tabName;
     private FilterGroup filterGroup;
     private ObservableList<AmiiboEntry> allAmiiboList;
     private FilteredList<AmiiboEntry> filteredAmiiboList;
@@ -59,6 +78,13 @@ public class SearchTabController implements Initializable {
     
     public SearchTabController(FilterEntry typeEntry, FilterEntry seriesEntry, FilterEntry characterEntry) {
         filterGroup = new FilterGroup(typeEntry, seriesEntry, characterEntry);
+        tabName = (typeEntry != null ? "T:" + typeEntry.getName() + " " : "") + 
+            (seriesEntry != null ? "S:" + seriesEntry.getName() + " " : "") + 
+            (characterEntry != null ? "C:" + characterEntry.getName() + " " : "");
+        if (tabName.isEmpty()) {
+            tabName = "Amiibo Search";
+        }
+        tabName = tabName.replaceAll(" ", "_").replaceAll(":", "_").replaceAll("\\s+", "_");
     }
 
     @Override
@@ -80,6 +106,8 @@ public class SearchTabController implements Initializable {
                 amiiboAmiiboSeriesGameSeriesFilterCheckBox.setDisable(false);
                 amiiboSearchTextField.setDisable(false);
                 amiiboSearchButton.setDisable(false);
+                amiiboCompressToZipCheckBox.setDisable(false);
+                amiiboExportDataButton.setDisable(false);
             }
         });
         amiiboRetrieveTask.setOnFailed(event -> {
@@ -125,6 +153,22 @@ public class SearchTabController implements Initializable {
         });
     }
 
+    @FXML
+    private void exportDataToFile() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select Export Folder");
+        File selectedDirectory = directoryChooser.showDialog(amiiboTableView.getScene().getWindow());
+        if (selectedDirectory == null) {
+            return; // User cancelled
+        }
+        boolean compressToZip = amiiboCompressToZipCheckBox.isSelected();
+        String fileName = tabName + "_export_" + DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now());
+        fileName += compressToZip ? ".zip" : ".csv";
+        Path outputPath = selectedDirectory.toPath().resolve(fileName);
+
+        exportAmiiboDataAsync(filteredAmiiboList, outputPath, compressToZip);
+    }
+
     private void configureTableView() {
         amiiboTableView.setPlaceholder(new Label("Loading..."));
         amiiboImageColumn.setCellValueFactory(cellData -> cellData.getValue().getImageViewProperty());
@@ -134,4 +178,66 @@ public class SearchTabController implements Initializable {
         amiiboGameSeriesColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGameSeries()));
         amiiboTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType()));
     }
+
+    private void exportAmiiboToCsv(List<AmiiboEntry> amiiboList, Path filePath) throws IOException {
+        try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
+            writer.write("Name,Character,Amiibo Series,Game Series,Type,Image URL");
+            writer.newLine();
+            for (AmiiboEntry entry : amiiboList) {
+                writer.write(String.format("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
+                        entry.getName(),
+                        entry.getCharacter(),
+                        entry.getAmiiboSeries(),
+                        entry.getGameSeries(),
+                        entry.getType(),
+                        entry.getImageUrl()));
+                writer.newLine();
+            }
+        }
+    }
+
+    private void zipFile(Path sourceFile, Path zipFile) throws IOException {
+        try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(zipFile))) {
+            ZipEntry zipEntry = new ZipEntry(sourceFile.getFileName().toString());
+            zos.putNextEntry(zipEntry);
+            Files.copy(sourceFile, zos);
+            zos.closeEntry();
+        }
+    }
+
+    public void exportAmiiboDataAsync(List<AmiiboEntry> amiiboList, Path outputPath, boolean compressToZip) {
+        CompletableFuture.runAsync(() -> {
+            try {
+                Path csvPath = outputPath;
+                if (compressToZip) {
+                    csvPath = Files.createTempFile("amiibo_export", ".csv");
+                }
+                
+                exportAmiiboToCsv(amiiboList, csvPath);
+
+                if (compressToZip) {
+                    zipFile(csvPath, outputPath);
+                    Files.deleteIfExists(csvPath);
+                }
+
+                Platform.runLater(() -> {
+                    logger.info("Export completed successfully: {}", outputPath);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Export Successful");
+                    alert.setHeaderText("Export completed successfully!");
+                    alert.setContentText("The data has been successfully exported to " + outputPath);
+                    alert.showAndWait();
+                });
+            } catch (IOException e) {
+                Platform.runLater(() -> {
+                    logger.error("Export failed: {}", e.getMessage());
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Export Failed");
+                    alert.setHeaderText("Export failed!");
+                    alert.setContentText("An error occurred while exporting the data: " + e.getMessage());
+                });
+            }
+        });
+    }
+
 }

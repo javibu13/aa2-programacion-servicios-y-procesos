@@ -36,6 +36,12 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
+      <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="560.0" spacing="10.0" VBox.vgrow="NEVER">
+         <children>
+            <CheckBox fx:id="amiiboCompressToZipCheckBox" disable="true" mnemonicParsing="false" text="Zip export?" />
+            <Button fx:id="amiiboExportDataButton" disable="true" mnemonicParsing="false" onAction="#exportDataToFile" text="Export data" />
+         </children>
+      </HBox>
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
