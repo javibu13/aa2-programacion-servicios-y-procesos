@@ -2,13 +2,28 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" spacing="15.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView fx:id="amiiboTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+      <HBox alignment="BOTTOM_RIGHT" fillHeight="false" prefHeight="0.0" prefWidth="560.0" spacing="20.0" VBox.vgrow="NEVER">
+         <children>
+            <CheckBox fx:id="amiiboNameCharacterFilterCheckBox" disable="true" mnemonicParsing="false" onAction="#updateLocalFilters" text="Name = Character" />
+            <CheckBox fx:id="amiiboAmiiboSeriesGameSeriesFilterCheckBox" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateLocalFilters" text="Amiibo Series = Game Series" />
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+               <children>
+                  <TextField fx:id="amiiboSearchTextField" disable="true" />
+                  <Button fx:id="amiiboSearchButton" disable="true" mnemonicParsing="false" onAction="#updateLocalFilters" prefHeight="25.0" prefWidth="64.0" text="Search" textAlignment="CENTER" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <TableView fx:id="amiiboTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="amiiboImageColumn" prefWidth="75.0" text="Image" />
             <TableColumn fx:id="amiiboNameColumn" prefWidth="75.0" text="Name" />
